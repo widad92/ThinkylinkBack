@@ -1,0 +1,16 @@
+package com.omni.rest.dto;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Data;
+
+@Data
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public class CouleurDto {
+
+    private Long couleurId;
+    private String codeCouleur;
+
+    public CouleurDto() {
+    }
+
+}

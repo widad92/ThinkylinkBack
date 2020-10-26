@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+    <action>
+        <actionName>CUSTOM-core_build_env_local</actionName>
+        <displayName>core_build_env_local</displayName>
+        <goals>
+            <goal>clean</goal>
+            <goal>install</goal>
+        </goals>
+        <activatedProfiles>
+            <activatedProfile>env-local</activatedProfile>
+        </activatedProfiles>
+    </action>
+</actions>

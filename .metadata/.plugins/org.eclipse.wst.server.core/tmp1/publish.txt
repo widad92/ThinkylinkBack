@@ -1,0 +1,4 @@
+#Tomcat publish data
+#Thu Oct 08 10:37:23 CEST 2020
+org.eclipse.jst.j2ee.server\:core=WEB-INF/lib/omni-back-end-core-1.0.2.jar
+org.eclipse.jst.jee.server\:/binary\:C\:\\Users\\asus\\.m2\\repository\\org\\springframework\\spring-web\\5.0.5.RELEASE\\spring-web-5.0.5.RELEASE.jar=WEB-INF/lib/spring-web-5.0.5.RELEASE.jar

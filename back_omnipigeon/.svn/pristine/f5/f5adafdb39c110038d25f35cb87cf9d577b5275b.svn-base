@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+    <action>
+        <actionName>CUSTOM-console skip tests</actionName>
+        <displayName>console skip tests</displayName>
+        <goals>
+            <goal>clean</goal>
+            <goal>install</goal>
+            <goal>-PskipTests</goal>
+        </goals>
+        <activatedProfiles>
+            <activatedProfile>env-local</activatedProfile>
+        </activatedProfiles>
+    </action>
+    <action>
+        <actionName>CUSTOM-console skip tests bis</actionName>
+        <displayName>console skip tests bis</displayName>
+        <goals>
+            <goal>clean</goal>
+            <goal>install</goal>
+            <goal>-DskipTests</goal>
+        </goals>
+        <activatedProfiles>
+            <activatedProfile>env-local</activatedProfile>
+        </activatedProfiles>
+    </action>
+    <action>
+        <actionName>CUSTOM-env_local_build</actionName>
+        <displayName>env_local_build</displayName>
+        <goals>
+            <goal>clean</goal>
+            <goal>install</goal>
+        </goals>
+        <activatedProfiles>
+            <activatedProfile>env-local</activatedProfile>
+        </activatedProfiles>
+    </action>
+</actions>

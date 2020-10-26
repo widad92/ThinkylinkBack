@@ -1,0 +1,99 @@
+package com.omni.rest.controller;
+
+import com.omni.core.exceptions.OmniException;
+import com.omni.core.model.Acteur;
+import com.omni.core.model.Organisation;
+import com.omni.core.model.User;
+import com.omni.core.service.OrganisationService;
+import com.omni.core.service.UserService;
+import com.omni.core.utils.OmniCoreUtils;
+import static com.omni.rest.controller.AbstractController.LOGGER;
+import com.omni.rest.dto.ActeurDto;
+import com.omni.rest.dto.OrganisationDto;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
+
+@Controller
+@RequestMapping("/organisation")
+@SessionAttributes("currentOrganisation")
+public class OrganisationController extends AbstractController {
+
+    private static final Logger logger = OmniCoreUtils.getLogger(OrganisationController.class);
+
+    @Autowired
+    private OrganisationService organisationService;
+    @Autowired
+    private UserService userService;
+
+    @ModelAttribute("currentOrganisation")
+    public Organisation getCurrentOrganisation() {
+        logger.debug("OrganisationController - getCurrentOrganisation");
+        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        final Organisation organisation = organisationService.findOrganisationByUser(user);
+        return organisation;
+    }
+
+    @RequestMapping(value = "/save", method = {RequestMethod.PUT})
+    @ResponseBody
+    public OrganisationDto save(
+            @RequestBody OrganisationDto organisation,
+            @ModelAttribute("currentOrganisation") Organisation currentOrganisation
+    ) throws OmniException {
+        logger.debug("OrganisationController - SaveOrganisation");
+        //Get fields to NOT update
+        organisation.setOrganisationId(currentOrganisation.getOrganisationId());
+        organisation.getUser().setUserId(currentOrganisation.getUser().getUserId());
+        organisation.getUser().setFlagUser(currentOrganisation.getUser().getFlagUser());
+        organisation.setFlagOrganisation(currentOrganisation.isFlagOrganisation());
+        organisation.getUser().setPassword(currentOrganisation.getUser().getPassword());
+        organisation.getUser().setRefUser(currentOrganisation.getUser().getRefUser());
+
+        Organisation _organisation = organisationService.save(mapper.map(organisation, Organisation.class));
+        return mapper.map(_organisation, OrganisationDto.class);
+    }
+
+    private OrganisationDto convertToOrganisationDto(Organisation organisation) {
+        return mapper.map(organisation, OrganisationDto.class);
+    }
+
+    @RequestMapping(value = "/currentOrganisation", method = {RequestMethod.GET, RequestMethod.OPTIONS})
+    @ResponseBody
+    public OrganisationDto currentOrganisation(
+            @ModelAttribute("currentOrganisation") Organisation currentOrganisation,
+            HttpServletRequest request, HttpServletResponse response) throws OmniException {
+        return convertToOrganisationDto(organisationService.findOrganisationById(currentOrganisation.getOrganisationId()));
+    }
+
+    @RequestMapping(value = "/byAliasOrganisation", method = {RequestMethod.GET, RequestMethod.OPTIONS})
+    @ResponseBody
+    public OrganisationDto getOrganisationByAliasOrganisation(
+            @RequestParam(value = "aliasOrganisation") String aliasOrganisation,
+            HttpServletRequest request, HttpServletResponse response
+    ) throws OmniException {
+        return mapper.map(organisationService.findByAliasOrganisation(aliasOrganisation), OrganisationDto.class);
+    }
+    
+     @RequestMapping(value = "/all", method = {RequestMethod.GET, RequestMethod.OPTIONS})
+    @ResponseBody
+    public List<OrganisationDto> getStations(HttpServletRequest request, HttpServletResponse response) throws OmniException {
+        LOGGER.debug("OrganisationController - getOrganisations");
+        List<Organisation> organisations = organisationService.findAll();
+        return organisations.stream()
+                .map(this::convertToOrganisationDto)
+                .collect(Collectors.toList());
+    }
+
+}

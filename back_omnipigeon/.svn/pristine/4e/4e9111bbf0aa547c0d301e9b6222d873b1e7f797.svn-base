@@ -1,0 +1,16 @@
+package com.omni.rest.dto;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Data;
+
+@Data
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public class ProduitDto {
+
+    private Long produitId;
+    private String libelleProduit;
+    private String description;
+    public ProduitDto() {
+    }
+
+}

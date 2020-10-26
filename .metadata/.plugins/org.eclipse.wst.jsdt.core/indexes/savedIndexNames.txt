@@ -1,0 +1,7 @@
+INDEX VERSION 1.4+C:\Users\asus\Desktop\dev\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+954616743.index
+1740932544.index
+3885050651.index
+384807741.index
+2032592369.index
+1005549459.index

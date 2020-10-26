@@ -1,0 +1,137 @@
+package com.omni.rest.dto;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Date;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@Data
+@EqualsAndHashCode(callSuper = false)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public class OrganisationDto extends AbstractDto {
+
+    private Long organisationId;
+
+    private String denomination;
+
+    private String nom;
+
+    private String prenom;
+
+    private String tel;
+
+    private String siret;
+
+    private String responsable;
+    private Date dateCreation;
+
+    private String description;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String aliasOrganisation;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private boolean flagOrganisation;
+
+    private UserDto user;
+
+    public OrganisationDto() {
+    }
+
+	public Long getOrganisationId() {
+		return organisationId;
+	}
+
+	public void setOrganisationId(Long organisationId) {
+		this.organisationId = organisationId;
+	}
+
+	public String getDenomination() {
+		return denomination;
+	}
+
+	public void setDenomination(String denomination) {
+		this.denomination = denomination;
+	}
+
+	public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	public String getPrenom() {
+		return prenom;
+	}
+
+	public void setPrenom(String prenom) {
+		this.prenom = prenom;
+	}
+
+	public String getTel() {
+		return tel;
+	}
+
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
+
+	public String getSiret() {
+		return siret;
+	}
+
+	public void setSiret(String siret) {
+		this.siret = siret;
+	}
+
+	public String getResponsable() {
+		return responsable;
+	}
+
+	public void setResponsable(String responsable) {
+		this.responsable = responsable;
+	}
+
+	public Date getDateCreation() {
+		return dateCreation;
+	}
+
+	public void setDateCreation(Date dateCreation) {
+		this.dateCreation = dateCreation;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getAliasOrganisation() {
+		return aliasOrganisation;
+	}
+
+	public void setAliasOrganisation(String aliasOrganisation) {
+		this.aliasOrganisation = aliasOrganisation;
+	}
+
+	public boolean isFlagOrganisation() {
+		return flagOrganisation;
+	}
+
+	public void setFlagOrganisation(boolean flagOrganisation) {
+		this.flagOrganisation = flagOrganisation;
+	}
+
+	public UserDto getUser() {
+		return user;
+	}
+
+	public void setUser(UserDto user) {
+		this.user = user;
+	}
+}

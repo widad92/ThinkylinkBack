@@ -1,0 +1,67 @@
+package com.omni.rest.dto;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@Data
+@JsonIgnoreProperties({"userId"})
+@EqualsAndHashCode(callSuper = false)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public class UserDto extends AbstractDto {
+
+    private static final long serialVersionUID = 1L;
+
+//    @JsonView({
+//        omniJsonView.PrivateView.class
+//    })
+    private Long userId;
+
+//    @JsonView({omniJsonView.ConnectedView.class})
+    private String email;
+
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String password;
+
+//    @JsonView({
+//        omniJsonView.PrivateView.class
+//    })
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String refUser;
+
+//    @JsonView({
+//        omniJsonView.PrivateView.class
+//    })
+    private String initial;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String provider;
+
+//    @JsonView({omniJsonView.PrivateView.class})
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private boolean flagUser;
+
+    
+//  
+//    @JsonView({
+//        omniJsonView.PrivateView.class
+//
+//    })
+    private String avatar;
+
+//    @JsonView({
+//        omniJsonView.PrivateView.class
+//    })
+    private AdresseDto adresse;
+
+    public UserDto() {
+    }
+
+    public UserDto(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
+}

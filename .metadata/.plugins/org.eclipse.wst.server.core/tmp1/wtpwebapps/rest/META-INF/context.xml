@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context crossContext="true" path="/omniBackendRest">
+  <!-- LOCAL -->
+  <Resource auth="Container" driverClassName="com.mysql.cj.jdbc.Driver" maxIdle="1000" maxTotal="1000" maxWaitMillis="10000" name="jdbc/LOCAL" password="Pige@n2020" removeAbandonedOnBorrow="true" removeAbandonedTimeout="300" testOnBorrow="true" type="javax.sql.DataSource" url="jdbc:mysql://localhost/pigeonbdd?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Amsterdam" username="pigeonDev"/>
+  <!-- DEV -->
+  <Resource auth="Container" driverClassName="com.mysql.cj.jdbc.Driver" maxIdle="1000" maxTotal="1000" maxWaitMillis="10000" name="jdbc/DEV" password="Pige@n2020" removeAbandonedOnBorrow="true" removeAbandonedTimeout="300" testOnBorrow="true" type="javax.sql.DataSource" url="jdbc:mysql://localhost/pigeonbdd?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Amsterdam" username="pigeonDev"/>
+  <!-- RECETTE -->
+  <Resource auth="Container" driverClassName="com.mysql.cj.jdbc.Driver" maxIdle="1000" maxTotal="1000" maxWaitMillis="10000" name="jdbc/RECETTE" password="Pige@n2020" removeAbandonedOnBorrow="true" removeAbandonedTimeout="300" testOnBorrow="true" type="javax.sql.DataSource" url="jdbc:mysql://localhost/pigeonbdd?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Amsterdam" username="pigeonRecette"/>
+  <!-- PREPROD -->
+  <Resource auth="Container" driverClassName="com.mysql.cj.jdbc.Driver" maxIdle="1000" maxTotal="1000" maxWaitMillis="10000" name="jdbc/PREPROD" password="Pige@n2020" removeAbandonedOnBorrow="true" removeAbandonedTimeout="300" testOnBorrow="true" type="javax.sql.DataSource" url="jdbc:mysql://localhost/pigeonbdd?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Amsterdam" username="pigeonPProd"/>
+  <!-- PROD -->
+  <Resource auth="Container" driverClassName="com.mysql.cj.jdbc.Driver" maxIdle="1000" maxTotal="1000" maxWaitMillis="10000" name="jdbc/PROD" password="Pige@n2020" removeAbandonedOnBorrow="true" removeAbandonedTimeout="300" testOnBorrow="true" type="javax.sql.DataSource" url="jdbc:mysql://localhost/pigeonbdd?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Amsterdam" username="pigeonProd"/>
+</Context>

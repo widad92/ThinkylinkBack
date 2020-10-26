@@ -1,0 +1,145 @@
+package com.omni.rest.dto;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@Data
+@JsonIgnoreProperties({"userId"})
+@EqualsAndHashCode(callSuper = false)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public class UserDto extends AbstractDto {
+
+    private static final long serialVersionUID = 1L;
+
+//    @JsonView({
+//        omniJsonView.PrivateView.class
+//    })
+    private Long userId;
+
+//    @JsonView({omniJsonView.ConnectedView.class})
+    private String email;
+
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String password;
+
+//    @JsonView({
+//        omniJsonView.PrivateView.class
+//    })
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String refUser;
+
+//    @JsonView({
+//        omniJsonView.PrivateView.class
+//    })
+    private String initial;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String provider;
+
+//    @JsonView({omniJsonView.PrivateView.class})
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private boolean flagUser;
+
+    
+//  
+//    @JsonView({
+//        omniJsonView.PrivateView.class
+//
+//    })
+    private String avatar;
+
+//    @JsonView({
+//        omniJsonView.PrivateView.class
+//    })
+    private AdresseDto adresse;
+
+    public UserDto() {
+    }
+
+    public UserDto(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getRefUser() {
+		return refUser;
+	}
+
+	public void setRefUser(String refUser) {
+		this.refUser = refUser;
+	}
+
+	public String getInitial() {
+		return initial;
+	}
+
+	public void setInitial(String initial) {
+		this.initial = initial;
+	}
+
+	public String getProvider() {
+		return provider;
+	}
+
+	public void setProvider(String provider) {
+		this.provider = provider;
+	}
+
+	public boolean isFlagUser() {
+		return flagUser;
+	}
+
+	public void setFlagUser(boolean flagUser) {
+		this.flagUser = flagUser;
+	}
+
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+
+	public AdresseDto getAdresse() {
+		return adresse;
+	}
+
+	public void setAdresse(AdresseDto adresse) {
+		this.adresse = adresse;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+    
+    
+
+}
