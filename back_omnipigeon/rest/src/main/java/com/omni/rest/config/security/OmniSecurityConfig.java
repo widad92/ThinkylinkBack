@@ -56,12 +56,9 @@ public class OmniSecurityConfig extends
             "/organisation/get-alias/*",
             "/organisation/all",
             "/organisation/organisationById",
-            
-            
-             //------------ Client ----------
+            //------------ Client ----------
             "/client/all",
             "/client/clientById",
-            
             /**
              * ******* Référentiels****************
              */
@@ -73,13 +70,23 @@ public class OmniSecurityConfig extends
              */
             "/pigeon/all",
             "/pigeon/pigeonById",
+<<<<<<< .mine
              "/pigeon/save",
+||||||| .r25
+=======
+            "/pigeon/save",
+>>>>>>> .r31
             /**
-             * ******* StationElevage****************
+             * ****** StationElevage****************
              */
             "/station/all",
             "/station/stationById",
+<<<<<<< .mine
              "/station/save",
+||||||| .r25
+=======
+            "/station/save",
+>>>>>>> .r31
             /**
              * ******* Acteur****************
              */
@@ -91,15 +98,30 @@ public class OmniSecurityConfig extends
              */
             "/enchere/all",
             "/enchere/enchereById",
+<<<<<<< .mine
              "/enchere/save",
+||||||| .r25
+=======
+            "/enchere/save",
+>>>>>>> .r31
             /**
              * ******* Evenement****************
              */
             "/evenement/all",
+<<<<<<< .mine
             "/evenement/evenementById",
             "/evenement/save"
                 
              
+||||||| .r25
+            "/evenement/evenementById"
+                
+             
+=======
+            "/evenement/evenementById",
+            "/evenement/save",
+            "/evenement/deleteById"
+>>>>>>> .r31
 
         };
 

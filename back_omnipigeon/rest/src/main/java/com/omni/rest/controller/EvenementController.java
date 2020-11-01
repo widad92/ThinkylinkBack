@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -59,7 +60,7 @@ public class EvenementController extends AbstractController {
     @RequestMapping(value = "/evenementById", method = {RequestMethod.GET, RequestMethod.OPTIONS})
     @ResponseBody
 //    @JsonView({OmniJsonView.ClientView.class})
-    public EvenementDto getPigeonById(
+    public EvenementDto getEvenementById(
             @RequestParam("evenementId") Long evenementId,
             HttpServletRequest request,
             HttpServletResponse response
@@ -70,6 +71,7 @@ public class EvenementController extends AbstractController {
     private EvenementDto convertToEvenementDto(Evenement evenement) {
         return mapper.map(evenement, EvenementDto.class);
     }
+<<<<<<< .mine
 
     //@Transactional
     @RequestMapping(value = "/save", method = {RequestMethod.POST})
@@ -79,4 +81,29 @@ public class EvenementController extends AbstractController {
         return evenementService.save(mapper.map(evenement, Evenement.class));
     }
 
+||||||| .r25
+    
+    
+=======
+
+    @Transactional
+    @RequestMapping(value = "/save", method = {RequestMethod.PUT})
+    @ResponseBody
+    public Evenement save(@RequestBody EvenementDto evenement) throws OmniException {
+        logger.debug("EvenementController - SaveEvenement : " + evenement);
+        return evenementService.save(mapper.map(evenement, Evenement.class));
+    }
+
+    @RequestMapping(value = "/deleteById", method = {RequestMethod.OPTIONS})
+    @ResponseBody
+//    @JsonView({OmniJsonView.ClientView.class})
+    public void deleteEvenementById(
+            @RequestParam("evenementId") Long evenementId,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws OmniException {
+        evenementService.deleteById(evenementId);
+    }
+
+>>>>>>> .r31
 }

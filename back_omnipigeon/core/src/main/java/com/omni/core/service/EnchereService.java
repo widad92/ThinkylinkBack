@@ -6,19 +6,21 @@
 package com.omni.core.service;
 
 import com.omni.core.model.Enchere;
-import com.omni.core.model.Evenement;
-import com.omni.core.model.Pigeon;
 import java.util.List;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
 /**
  *
  * @author asus
  */
 public interface EnchereService {
-    
+
     public List<Enchere> findAll();
+
     public Enchere findEnchereById(Long enchereId);
     public Enchere save(final Enchere enchere);
 
-    
+    public Enchere save(final Enchere enchere);
+    public void deleteById(Long enchereId);
 }

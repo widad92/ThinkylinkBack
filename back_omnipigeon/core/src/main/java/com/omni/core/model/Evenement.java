@@ -6,11 +6,28 @@
 package com.omni.core.model;
 
 import java.io.Serializable;
+<<<<<<< .mine
+||||||| .r24
+import java.util.Date;
+import java.util.List;
+
+=======
+import java.util.List;
+import javax.persistence.CascadeType;
+>>>>>>> .r31
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+<<<<<<< .mine
+||||||| .r24
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
+=======
+import javax.persistence.OneToMany;
+>>>>>>> .r31
 import javax.persistence.Table;
 import org.hibernate.annotations.Proxy;
 
@@ -31,6 +48,11 @@ public class Evenement extends GenericEntity implements Serializable {
     
     @Column(name = "nomEvenement")
     private String nom;
+    
+     
+     //@OneToMany(mappedBy = "evenement", cascade = CascadeType.ALL, orphanRemoval = true)
+     @OneToMany(mappedBy="evenement")
+     private List<Client> clients ;
 
    /* @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "evenement")
@@ -42,9 +64,6 @@ public class Evenement extends GenericEntity implements Serializable {
     /*@Column(name = "classement")
 	private TreeSet<Long> classement;
      */
-    public Evenement() {
-        super();
-    }
 
     /**
      * @return the evenementId
@@ -88,4 +107,18 @@ public class Evenement extends GenericEntity implements Serializable {
     public void setNom(String nom) {
         this.nom = nom;
     }
+
+    /**
+     * @return the clients
+     */
+    public List<Client> getClients() {
+        return clients;
+    }
+
+   
+    public void setClients(List<Client> clients) {
+        this.clients = clients;
+    }
+    
+    
 }

@@ -18,8 +18,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+<<<<<<< .mine
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+||||||| .r25
+import org.springframework.web.bind.annotation.PathVariable;
+=======
+import org.springframework.web.bind.annotation.RequestBody;
+>>>>>>> .r31
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -70,6 +76,13 @@ public class PigeonController extends AbstractController {
         logger.debug("Pigeonontroller - SavePigeon");
           Pigeon _pigeon = pigeonService.save(mapper.map(pigeon, Pigeon.class));
         return mapper.map(_pigeon, PigeonDto.class);
+    }
+
+    @RequestMapping(value = "/save", method = {RequestMethod.POST})
+    @ResponseBody
+    public PigeonDto save(@RequestBody PigeonDto pigeon) throws OmniException {
+        logger.debug("Pigeonontroller - SavePigeon");
+        return mapper.map(pigeonService.save(mapper.map(pigeon, Pigeon.class)), PigeonDto.class);
     }
 
 }

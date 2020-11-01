@@ -6,7 +6,6 @@
 package com.omni.core.service;
 
 import com.omni.core.model.Evenement;
-import com.omni.core.model.Pigeon;
 import java.util.List;
 
 /**
@@ -18,6 +17,14 @@ public interface EvenementService {
     public List<Evenement> findAll();
 
     public Evenement findEvenementById(Long evenementId);
+<<<<<<< .mine
     
     public boolean save(final Evenement evenement);
+||||||| .r24
+=======
+    
+    public Evenement save(final Evenement evenement);
+    
+    public void deleteById(Long evenementId);
+>>>>>>> .r31
 }

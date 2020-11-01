@@ -21,10 +21,10 @@ import org.springframework.stereotype.Service;
  */
 @Service("evenementService")
 public class EvenementSeviceImpl implements EvenementService {
-    
-    
+
     @Autowired
     EvenementRepository evenementRepository;
+
     @Override
     public List<Evenement> findAll() {
         return evenementRepository.findAll();
@@ -32,9 +32,19 @@ public class EvenementSeviceImpl implements EvenementService {
 
     @Override
     public Evenement findEvenementById(Long evenementId) {
-        return  evenementRepository.findOne(evenementId);
+        return evenementRepository.findOne(evenementId);
     }
-    
+
+    @Override
+    public Evenement save(Evenement evenement) {
+        return evenementRepository.save(evenement);
+    }
+
+    @Override
+    public void deleteById(Long evenementId) {
+        evenementRepository.deleteByEvenementId(evenementId);
+    }
+
     @Override
     public boolean save(Evenement evenement) {
 //        Evenement evenement = evenementToSave;
